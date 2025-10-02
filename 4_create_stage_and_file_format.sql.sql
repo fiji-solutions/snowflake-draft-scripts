@@ -1,0 +1,23 @@
+CREATE DATABASE EXERCISE_DB;
+CREATE
+OR REPLACE TABLE EXERCISE_DB.PUBLIC.CUSTOMERS (
+    ID INT,
+    first_name varchar,
+    last_name varchar,
+    email varchar,
+    age int,
+    city varchar
+);
+CREATE
+OR REPLACE STAGE EXERCISE_DB.PUBLIC.FILE_FORMAT_STAGE url = 's3://snowflake-assignments-mc/fileformat/';
+CREATE
+OR REPLACE file format EXERCISE_DB.PUBLIC.FILE_FORMAT field_delimiter = '|',
+skip_header = 1;
+COPY INTO EXERCISE_DB.PUBLIC.CUSTOMERS
+FROM
+    @EXERCISE_DB.PUBLIC.FILE_FORMAT_STAGE file_format = EXERCISE_DB.PUBLIC.FILE_FORMAT;
+SELECT
+    COUNT(*)
+FROM
+    EXERCISE_DB.PUBLIC.CUSTOMERS;
+DROP DATABASE EXERCISE_DB;
